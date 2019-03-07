@@ -3,6 +3,8 @@ Created on Feb 28, 2019
 
 @author: bdcas
 '''
+import re
+
 def SymbolToNumber(Symbol):
     """
     Converts base to number (in lexicograpical order)
@@ -84,7 +86,8 @@ def ProfileMostProbable(Text, k, Profile):
     for c in window(Text, k):
         for x in range(len(c)):
             y = SymbolToNumber(c[x])
-            index *= float(letter[x][y])
+            if x and y is not None: # check if none is present
+                index *= float(letter[x][y])
         hamdict[c] = index
         index = 1
     for pat, ham in hamdict.items():
@@ -223,10 +226,17 @@ def GreedyMotifSearch(DNA, k, t):
             bestMotifs = newMotifs
     return bestMotifs
 
-testDNA = ['CGGGGCGAGGGGGTGTCTGTCTCCAAGGAGCTAGTCTGTCTTGCCAAGTTGAGGGACATTTAAAGGGTTTGACTTTATCGGGACAGAGAGGGGCCAGTCTTGCCTTAGAAAGCTCCTGGTTGTGGTGAGTGGACCAGAAGAGGTCAAGAATGGCAGCTGAGATACATAGGGGTCCTTGCTTGGCCTCCGTGGGCATTTTCAGTGAGGGCTAAACCAGATGCCTTGTCTACCGCAAAG',
-'ACTGAGTGCC',
-'CGATTATAATAGTATCATTAAGTCTAATAGTTTCACTTCTTCCTTAATACCACTTTACAAACCTCCCTCATCCTCAGCTCTGGCCTGGGCTATACCTCTCTTTACAGACCCCAGGTCTCTGCAGATAATCCCTTAGTGTCCAGCCACCCAGGTAATGGACACTTTGCCCTAACTGGCCTCAAAGAGCCATTTCTGGAGCTGCAGGCCTTCTCCCCTAAACCTGCTAGTTATTTATTTCATACCTAGATGCCTCCCTGAATAA',
-'TTAGGTTTCTCTAGCGATCTGCATAGCTAGGTTTATTGAATATCTGACAAGATTAAATGGATGTTACTGTACTATGACTAAAAAGCACTGGACTACCACAATAAATCTAACATGCTGAAATAAAGGATTTACAGTACCAAACAGAATTATACCTATTT',
-'GCACCCTATTATTAAACCATTAGAAATGACATATTATTGATAGGAAAATAATGTATTGAGTAAATAAAAAAATCCTTTAGAATTTATGATTCTCTTCTGAGAAAAACTTTAGTTCTGTATATTTAATGATTTAAGTAGGTAAGCTCATCTTTTGAAGACGATCCATAGTTAATGG']
+f=open("boundaryleft.fasta", "r")
+if f.mode == "r":
+    contents = f.read()
+    leftSide = re.sub(r"[\n\t\s]*", "", contents)
 
-print(GreedyMotifSearch(testDNA, 3, 5))
+f=open("boundaryright.fasta", "r")
+if f.mode == "r":
+    contents = f.read()
+    rightSide = re.sub(r"[\n\t\s]*", "", contents)
+
+testDNA = [leftSide, rightSide]
+kmers = 4
+t = 2
+print(GreedyMotifSearch(testDNA, kmers, t))
