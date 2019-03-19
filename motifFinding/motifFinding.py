@@ -226,17 +226,17 @@ def GreedyMotifSearch(DNA, k, t):
             bestMotifs = newMotifs
     return bestMotifs
 
-f=open("boundaryleft.fasta", "r")
-if f.mode == "r":
-    contents = f.read()
-    leftSide = re.sub(r"[\n\t\s]*", "", contents)
+# f=open("boundaryleft.fasta", "r")
+# if f.mode == "r":
+#     contents = f.read()
+#     leftSide = re.sub(r"[\n\t\s]*", "", contents) 
 
-f=open("boundaryright.fasta", "r")
+f=open("Adrenal.fasta", "r")
 if f.mode == "r":
     contents = f.read()
     rightSide = re.sub(r"[\n\t\s]*", "", contents)
 
-testDNA = [leftSide, rightSide]
-kmers = 4
-t = 2
+testDNA = [rightSide]
+kmers = 9
+t = 1
 print(GreedyMotifSearch(testDNA, kmers, t))
