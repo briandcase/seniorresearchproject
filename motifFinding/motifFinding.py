@@ -226,7 +226,7 @@ def GreedyMotifSearch(DNA, k, t):
             bestMotifs = newMotifs
     return bestMotifs
 
-f=open("H1-Dixon.fasta", "r")
+f=open("KBM7_Lieb.fasta", "r")
 if f.mode == "r":
     contents = f.read()
     rightSide = re.sub(r"[\n\t\s]*", "", contents)
